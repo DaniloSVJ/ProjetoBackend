@@ -13,7 +13,10 @@
     ],
     "cli": {
         "migrationsDir": "./src/database/migrations"
-    }
+    },
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": true
+      }
 
 
 

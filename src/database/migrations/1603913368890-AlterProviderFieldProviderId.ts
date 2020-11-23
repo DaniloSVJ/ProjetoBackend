@@ -4,16 +4,16 @@ export default class AlterProviderFieldProviderId1603913368890
 implements MigrationInterface {
     //implements MigrationInterface{
     public async up(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.dropColumn('appointements',"provider");
+        await queryRunner.dropColumn('appointments',"provider");
         await queryRunner.addColumn(
-            'appointements',
+            'appointments',
             new TableColumn({
                 name:'provider_id',
                 type:"uuid",
                 isNullable:true,
             })
         )
-        await queryRunner.createForeignKey('appointements',
+        await queryRunner.createForeignKey('appointments',
         new TableForeignKey(
         {
             name: "AppointProvider",

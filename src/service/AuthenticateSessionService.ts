@@ -3,42 +3,48 @@ import {compare} from 'bcryptjs'
 import {sign} from 'jsonwebtoken'
 import User from '../models/user'
 import authConfig from '../config/auth'
+import AppError from '../error/AppErro'
+
 interface Request {
-    email:string,
-    password:string
-}
-interface Response{
-    user: User,
-    token:string
-}
+    email: string;
+    password: string;
+  }
 
-class AuthenticateUserService {
-    public async execute({email,password}:Request):Promise<Response>{
-        const userRepository  = getRepository(User)
-        const user = await userRepository.findOne({where:{email}})
+  interface Response {
+    user: User;
+    token: string;
+  }
 
-        if (!user){
-            throw new Error("Incorret email/password combination")
-        }
+  class AuthenticateUserService {
+    public async execute({ email, password }: Request): Promise<Response> {
+      const usersRepository = getRepository(User);
 
-        const passwordCompare =  await compare(password,user.password)
-        if (!passwordCompare){
-            throw new Error("Incorret email/password combination")
-        }
-        const { secret, expiresIn } = authConfig.jwt;
+      const user = await usersRepository.findOne({
+        where: { email },
+      });
 
-    const token = sign({}, secret, {
-      subject: user.id,
+      if (!user) {
+        throw new AppError('Incorrect email/password combination.',401);
+      }
 
-      expiresIn,
-    });
+      const passwordMatched = await compare(password, user.password);
 
+      if (!passwordMatched) {
+        throw new AppError('Incorrect email/password combination.',401);
+      }
 
-        return {
-            user,
-            token
-        }
-    }  
+      const { secret, expiresIn } = authConfig.jwt;
+
+      const token = sign({}, secret, {
+        subject: user.id,
+        expiresIn,
+      });
+
+      return {
+        user,
+        token,
+      };
+    }
 }
 
 export default AuthenticateUserService

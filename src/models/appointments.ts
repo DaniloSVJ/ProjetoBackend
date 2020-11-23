@@ -1,31 +1,39 @@
-import {Entity,Column,ManyToOne, PrimaryGeneratedColumn,CreateDateColumn,UpdateDateColumn, JoinColumn} from "typeorm"
-import User from "./user";
+import {
+    Entity,
+    Column,
+    PrimaryGeneratedColumn,
+    UpdateDateColumn,
+    CreateDateColumn,
+    ManyToOne,
+    JoinColumn,
+  } from 'typeorm';
 
+  import User from './user';
 
-@Entity('appointements')
-class Appointment {
+  /**
+   * Um para Um (OneToOne)
+   * Um para Muitos (OneToMany)
+   * Muitos para Muitos (ManyToMany)
+   */
+  @Entity('appointments')
+  class Appointment {
     @PrimaryGeneratedColumn('uuid')
-    id:string;
+    id: string;
 
     @Column()
-    provider_id:string;
+    provider_id: string;
 
-    @ManyToOne(()=>User)
-    @JoinColumn({name: "provider_id"})
-    provider:User;
+    @ManyToOne(() => User) // Many appointments to a user
+    @JoinColumn({ name: 'provider_id' }) // The column that will identify the provider
+    provider: User;
 
     @Column('timestamp with time zone')
-    date:Date;
+    date: Date;
+
     @CreateDateColumn()
-    created_at:Date;
+    created_at: Date;
+
     @UpdateDateColumn()
-    update_at:Date;
-
-    /*constructor({provider,date }: Omit<Appointment,"id"> ){
-        this.id = uuid()        // ||
-        this.date = date;       // L ====> está omitindo o id
-        this.provider = provider
-    } */
-}
-
-export default Appointment
+    updated_at: Date;
+  }
+  export default Appointment;

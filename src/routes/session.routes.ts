@@ -6,26 +6,23 @@ const sessionsRoutes = Router()
 //const appointments:Appointment[] = []
 
  sessionsRoutes.post('/', async (request,response)=>{
-   try {
-        const {email,password} = request.body;
-        const authenticateUser = new AuthenticateSessionService()
 
-        const {user,token}= await authenticateUser.execute({
+    const {email,password} = request.body;
+    const authenticateUser = new AuthenticateSessionService()
 
-            email,
-            password
+    const {user,token}= await authenticateUser.execute({
 
-        })
+        email,
+        password
 
-        //delete user.email
+    })
+
+    //delete user.email
 
 
-        return response.send({user,token})
+    //return response.json({user,token})
 
-   } catch (err) {
-        return response.status(400).json({error: err.message});
 
-   }
 })
 
 export default sessionsRoutes;
