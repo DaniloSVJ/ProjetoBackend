@@ -15,7 +15,7 @@ interface Midl{
 }
 const app = express()
 app.use(express.json())
-app.use('/files',express.static(uploadConfig.directory))
+//app.use('/files',express.static(uploadConfig.directory))
 app.use(routes)
 
 app.use((err: Error, request: Request, response: Response, _: NextFunction) => {
@@ -28,7 +28,7 @@ app.use((err: Error, request: Request, response: Response, _: NextFunction) => {
 
     return response
       .status(500)
-      .json({ status: 'error', message: 'Internal server error' });
+      .json({ status: 'error',  message: err.message });//'Internal server error' });
   });
 //routes.use("/appointments",appointmentsRouter)
 

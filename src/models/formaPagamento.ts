@@ -4,36 +4,36 @@ import {
     PrimaryGeneratedColumn,
     UpdateDateColumn,
     CreateDateColumn,
-    ManyToOne,
+    OneToMany,
+    ManyToMany,
     JoinColumn,
   } from 'typeorm';
 
-  import User from './user';
+  import Produto from './produtos';
 
   /**
    * Um para Um (OneToOne)
    * Um para Muitos (OneToMany)
    * Muitos para Muitos (ManyToMany)
    */
-  @Entity('appointments')
-  class Appointment {
+
+  @Entity('grupo_produtos')
+  class GrupoProdutos {
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
     @Column()
-    provider_id: string;
+    nome: string;
 
-    @ManyToOne(() => User) // Many appointments to a user
-    @JoinColumn({ name: 'provider_id' }) // The column that will identify the provider
-    provider: User;
-
-    @Column('timestamp with time zone')
-    date: Date;
+    @OneToMany(() => Produto, produto =>produto.grupo) // Many GrupoProdutoss to a user
+    produto: Produto;
 
     @CreateDateColumn()
     created_at: Date;
 
     @UpdateDateColumn()
     updated_at: Date;
+
+
   }
-  export default Appointment;
+  export default GrupoProdutos;
